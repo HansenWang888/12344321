@@ -1,0 +1,166 @@
+//
+//  PrefixHeader.pch
+//  Project
+//
+//  Created by Mike on 2018/12/30.
+//  Copyright © 2018 CDJay. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#define CSHB
+#import "ProjectCSHB-Swift.h"
+//// 每个app配置不一样的参数
+#ifdef XZHB
+
+static NSString * const kServerUrl  = @"https://gateway.gh518.com/";
+static NSString * const kWXKey = @"wx6855b12dbf3d7a06";
+static NSString * const kWXSecret = @"3da5d9957cbc82685512002aac39e3f0";
+//static NSString * const kTenant = @"pigss";
+static NSString * const kTenant = @"pigprd";
+static NSString * const kMTAKey = @"IKAM6P7U2J7C";
+static NSString * const kBaseKey = @"YXBwOmFwcA==";
+#endif
+
+#ifdef BBHB
+static NSString * const kServerUrl  = @"https://gateway.em558.com/";
+static NSString * const kWXKey = @"wx7e01d83c9ec44c1d";
+static NSString * const kWXSecret = @"4b1dbcf516dfe571ab61d0253dbb9198";
+static NSString * const kTenant = @"baba956";
+static NSString * const kMTAKey = @"";
+static NSString * const kBaseKey = @"";
+#endif
+
+#ifdef XLHB
+static NSString * const kServerUrl  = @"https://gateway.em558.com/";
+static NSString * const kWXKey = @"wx09e5c5c666a3d827";
+static NSString * const kWXSecret = @"5b9e80bb7b0a111a9353de4a4f9a0c33";
+static NSString * const kTenant = @"shouji137";
+static NSString * const kMTAKey = @"";
+static NSString * const kBaseKey = @"";
+#endif
+
+#ifdef BWHB
+static NSString * const kServerUrl  = @"https://gateway.em558.com/";
+static NSString * const kWXKey = @"wxda92ccd4be36a781";
+static NSString * const kWXSecret = @"5003f7e63ef3c50e8f67ae6bac85bbb6";
+static NSString * const kTenant = @"baiwan168";
+static NSString * const kMTAKey = @"";
+static NSString * const kBaseKey = @"";
+#endif
+
+#ifdef HBLHB //红包乐
+static NSString * const kServerUrl  = @"https://gateway.em558.com/";
+static NSString * const kWXKey = @"wxe53c52f7550965bd";
+static NSString * const kWXSecret = @"a8ba08fadbbfd8b42812349395f5bd5b";
+static NSString * const kTenant = @"hbl906";
+static NSString * const kMTAKey = @"";
+static NSString * const kBaseKey = @"";//@"Basic YXBwX3ByZDphcHBfcHJk";
+#endif
+
+#ifdef QWHB
+static NSString * const kServerUrl  = @"https://gateway.em558.com/";
+static NSString * const kWXKey = @"wx8451194f47419f6b";
+static NSString * const kWXSecret = @"47c7d06ee95108d224790691a1779bc4";
+static NSString * const kTenant = @"quwan520";
+static NSString * const kMTAKey = @"";
+static NSString * const kBaseKey = @"";
+#endif
+
+#ifdef RRHB
+static NSString * const kServerUrl  = @"https://gateway.em558.com/";
+static NSString * const kWXKey = @"wxded5e1c24fbd8ce1";
+static NSString * const kWXSecret = @"34c497830b0d1988e36e28015173e642";
+static NSString * const kTenant = @"renren367";
+static NSString * const kMTAKey = @"";
+static NSString * const kBaseKey = @"";
+#endif
+
+#ifdef DFSHB
+static NSString * const kServerUrl  = @"https://gateway.em558.com/";
+static NSString * const kWXKey = @"wx12da77e5f0e7a467";
+static NSString * const kWXSecret = @"d58494c0ba360de7cba96d1000de4e6b";
+static NSString * const kTenant = @"dfs357";
+static NSString * const kMTAKey = @"I523SIIDJD5L";
+static NSString * const kBaseKey = @"YXBwOmFwcA==";
+#endif
+
+#ifdef WBHB
+static NSString * const kServerUrl  = @"https://gateway.em558.com/";
+static NSString * const kWXKey = @"wxd831b3399665c1ad";
+static NSString * const kWXSecret = @"d210baadc3bedf57534f3fde594fe754";
+static NSString * const kTenant = @"wuba135";
+static NSString * const kMTAKey = @"IK2HZ3KZI98A";
+static NSString * const kBaseKey = @"YXBwOmFwcA==";
+#endif
+
+#ifdef TTHB
+static NSString * const kServerUrl  = @"https://api.96hongbao.com/api/";
+static NSString * const kWXKey = @"wx3ec1ad8911d756b2";
+static NSString * const kWXSecret = @"d42e6203d00069c0ab228ddd59979196";
+static NSString * const kTenant = @"fy_pig_test";
+static NSString * const kMTAKey = @"I8PFUY2V4Z6C";
+static NSString * const kBaseKey = @"YXBwOmFwcA==";
+#endif
+
+#ifdef WWHB
+static NSString * const kServerUrl  = @"https://gateway.em558.com/";
+static NSString * const kWXKey = @"wx7dee96d9b15804bd";
+static NSString * const kWXSecret = @"8e21567a668ebe2abfe68889ea41e7c5";
+static NSString * const kTenant = @"wang237";
+static NSString * const kMTAKey = @"IFG2Y57CV1SQ";
+static NSString * const kBaseKey = @"YXBwOmFwcA==";
+#endif
+
+#ifdef QQHB
+static NSString * const kServerUrl  = @"https://gateway.em558.com/";
+static NSString * const kWXKey = @"wx098a1996f93657f3";
+static NSString * const kWXSecret = @"a28936b9623f22c0f7a629dbe5b78706";
+static NSString * const kTenant = @"quanqiu263";//pigline
+static NSString * const kMTAKey = @"I5ATNT54RB1P";
+static NSString * const kBaseKey = @"YXBwOmFwcA==";
+#endif
+
+#ifdef QXHB
+static NSString * const kServerUrl  = @"https://gateway.thhds.com/";
+static NSString * const kWXKey = @"wx9226db3bfd2e91a8";
+static NSString * const kWXSecret = @"13eacff0d74840aff5f2c6944b94c057";
+static NSString * const kTenant = @"qianxi187";//商户号
+static NSString * const kMTAKey = @"";//热更新
+static NSString * const kBaseKey = @"";
+#endif
+
+#ifdef CSHB
+static NSString * const kServerUrl  = @"https://graygateway.em558.com/";
+static NSString * const kWXKey = @"wx6855b12dbf3d7a06";
+static NSString * const kWXSecret = @"3da5d9957cbc82685512002aac39e3f0";
+static NSString * const kTenant = @"fy_pig_test";//uat 100000 ,fy_pig_test,pigss
+
+static NSString * const kMTAKey = @"";
+static NSString * const kBaseKey = @"YXBwOmFwcA==";
+#endif
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////
+// 测试服务器地址
+
+static NSString * const kServerJson = @"[\
+{\"url\":\"http://gateway.wcqun.com/\",\"isBeta\":\"1\",\"baseKey\":\"YXBwOmFwcA==\"},\
+{\"url\":\"http://10.10.95.9:6000/\",\"isBeta\":\"1\",\"baseKey\":\"YXBwOmFwcA==\"},\
+{\"url\":\"http://api.wcqun.com/api/\",\"isBeta\":\"1\",\"baseKey\":\"YXBwOmFwcA==\"},\
+{\"url\":\"http://10.10.95.35:6000/\",\"isBeta\":\"1\",\"baseKey\":\"YXBwOmFwcA==\"},\
+{\"url\":\"http://10.10.95.201:16000/\",\"isBeta\":\"1\",\"baseKey\":\"YXBwOmFwcA==\"},\
+{\"url\":\"http://10.10.95.35:16000/\",\"isBeta\":\"1\",\"baseKey\":\"YXBwOmFwcA==\"}\
+]";//10.10.95.191:8099//
+
+
+#import "Public.h"
+
+
+#endif /* PrefixHeader_pch */

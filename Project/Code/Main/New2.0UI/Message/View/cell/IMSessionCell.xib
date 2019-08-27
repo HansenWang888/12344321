@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="cell" selectionStyle="default" indentationWidth="10" rowHeight="83" id="KGk-i7-Jjw" customClass="IMSessionCell" customModule="ProjectCSHB" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="395" height="83"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="395" height="82.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l8j-pC-j1Y" customClass="DYView">
+                        <rect key="frame" x="0.0" y="10" width="395" height="72.5"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LKF-uA-JNv">
+                                <rect key="frame" x="14" y="8" width="56.5" height="56.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="LKF-uA-JNv" secondAttribute="height" multiplier="1:1" id="X0I-1T-Fnf"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="小猪客服（在线）" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vhw-qd-a4G">
+                                <rect key="frame" x="75.5" y="8" width="115" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.42745098039215684" green="0.42352941176470588" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="你是假的吧" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bho-g5-s5T">
+                                <rect key="frame" x="75.5" y="45.5" width="311.5" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.55294117647058827" green="0.55294117647058827" blue="0.55294117647058827" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="14:18:25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGG-Tv-DwQ">
+                                <rect key="frame" x="338" y="9" width="49" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.42745098040000001" green="0.42352941179999998" blue="0.43137254899999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6d-8W-cYH" userLabel="haveMessage">
+                                <rect key="frame" x="192.5" y="12" width="9" height="9"/>
+                                <color key="backgroundColor" red="1" green="0.86274509803921573" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="9" id="Fck-sO-bQ1"/>
+                                    <constraint firstAttribute="width" constant="9" id="MAA-tM-eVd"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <real key="value" value="4.5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="WGG-Tv-DwQ" firstAttribute="centerY" secondItem="vhw-qd-a4G" secondAttribute="centerY" id="9bv-2W-vXR"/>
+                            <constraint firstItem="LKF-uA-JNv" firstAttribute="top" secondItem="l8j-pC-j1Y" secondAttribute="top" constant="8" id="PNY-n1-KUz"/>
+                            <constraint firstItem="bho-g5-s5T" firstAttribute="leading" secondItem="vhw-qd-a4G" secondAttribute="leading" id="SRe-YF-iGk"/>
+                            <constraint firstItem="R6d-8W-cYH" firstAttribute="centerY" secondItem="vhw-qd-a4G" secondAttribute="centerY" id="UQc-5s-eYU"/>
+                            <constraint firstItem="LKF-uA-JNv" firstAttribute="leading" secondItem="l8j-pC-j1Y" secondAttribute="leading" constant="14" id="Vh8-1k-k9z"/>
+                            <constraint firstItem="R6d-8W-cYH" firstAttribute="leading" secondItem="vhw-qd-a4G" secondAttribute="trailing" constant="2" id="bzN-bj-Mwt"/>
+                            <constraint firstAttribute="trailing" secondItem="bho-g5-s5T" secondAttribute="trailing" constant="8" id="dOL-ck-Abg"/>
+                            <constraint firstItem="vhw-qd-a4G" firstAttribute="leading" secondItem="LKF-uA-JNv" secondAttribute="trailing" constant="5" id="emh-9q-tok"/>
+                            <constraint firstAttribute="bottom" secondItem="LKF-uA-JNv" secondAttribute="bottom" constant="8" id="g3X-yK-WlB"/>
+                            <constraint firstItem="bho-g5-s5T" firstAttribute="bottom" secondItem="LKF-uA-JNv" secondAttribute="bottom" constant="-3" id="rUh-PQ-52g"/>
+                            <constraint firstItem="vhw-qd-a4G" firstAttribute="top" secondItem="LKF-uA-JNv" secondAttribute="top" id="slZ-NO-5e9"/>
+                            <constraint firstAttribute="trailing" secondItem="WGG-Tv-DwQ" secondAttribute="trailing" constant="8" id="u3f-eJ-Yd2"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="5"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="l8j-pC-j1Y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Ybd-1h-7wn"/>
+                    <constraint firstItem="l8j-pC-j1Y" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="a0t-oy-eq7"/>
+                    <constraint firstAttribute="trailing" secondItem="l8j-pC-j1Y" secondAttribute="trailing" id="d0s-j9-FxM"/>
+                    <constraint firstAttribute="bottom" secondItem="l8j-pC-j1Y" secondAttribute="bottom" id="hby-Hf-Rau"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="avartarImgV" destination="LKF-uA-JNv" id="psu-Y5-CvI"/>
+                <outlet property="haveMessage" destination="R6d-8W-cYH" id="WTw-M4-8RY"/>
+                <outlet property="messageLabel" destination="bho-g5-s5T" id="rrO-yT-xN7"/>
+                <outlet property="nameLabel" destination="vhw-qd-a4G" id="m2H-oJ-f4g"/>
+                <outlet property="timeLabel" destination="WGG-Tv-DwQ" id="RdZ-JO-doo"/>
+            </connections>
+            <point key="canvasLocation" x="-212" y="170"/>
+        </tableViewCell>
+    </objects>
+</document>

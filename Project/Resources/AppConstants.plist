@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>rechargeTip</key>
+	<string>为确保您的款项及时到账，请您留意以下内容：
+1.若在存款中提示二维码已过期或者存入金额已满，请返回重新发起支付。
+2.站点每日都会产生大量存款订单，为确保每一位玩家的存款能够及时到账，请填写实际存款金额，以便于平台快速处理您的业务。
+3.支付时，请务必按照页面显示的金额进行支付，否则可能将导致订单延误或掉单</string>
+</dict>
+</plist>

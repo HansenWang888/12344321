@@ -1,0 +1,13 @@
+//
+//  NotifMessage.m
+//  Project
+//
+//  Created by mini on 2018/8/15.
+//  Copyright © 2018年 CDJay. All rights reserved.
+//
+
+#import "NotifMessage.h"
+
+@implementation NotifMessage
+
+@end
