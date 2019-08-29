@@ -61,7 +61,18 @@
     self.noDataBtn.hidden = YES;
     
 }
-
+- (void)loadLocalData {
+    
+    if (self.loadLocalDataCallback) {
+        kWeakly(self);
+        self.loadLocalDataCallback(^(NSArray<id> * _Nonnull sources) {
+            [weakself.dy_dataSource removeAllObjects];
+            [weakself.dy_dataSource addObjectsFromArray:sources];
+            [weakself reloadData];
+        });
+    }
+    
+}
 
 - (void)loadData {
     self.pageIndex = 0;
@@ -157,10 +168,9 @@
     cell.model = self.dy_dataSource[indexPath.row];
     
     kWeakly(self);
-    NSIndexPath *nPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
-    cell.OtherClickFlag = ^(NSInteger flag) {
+    cell.OtherClickFlag = ^(id model,NSInteger flag) {
         if (weakself.didSelectedCellCallback) {
-            weakself.didSelectedCellCallback(nPath, @(flag));
+            weakself.didSelectedCellCallback(model, @(flag));
         }
     };
     return cell;

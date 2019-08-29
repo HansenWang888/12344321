@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**自己定义flag 表示点击的是哪个按钮
  最终通过tableView 的点击cell的回调 进行传递*/
-@property (nonatomic,copy) void(^OtherClickFlag)(NSInteger flag);
+@property (nonatomic,copy) void(^ _Nullable OtherClickFlag)(id model,NSInteger flag);
 
 
 @end
@@ -37,7 +37,7 @@ typedef void (^DYTableView_Result)(NSArray<id> *sources);
 @interface DYTableView : UITableView
 @property (nonatomic,assign) NSUInteger pageIndex;
 @property (nonatomic,assign) NSUInteger pageSize;
-@property (nonatomic,strong) NSMutableArray<DYTableViewModel *> *dy_dataSource;
+@property (nonatomic,strong) NSMutableArray<id> *dy_dataSource;
 @property (nonatomic,copy) NSString *noDataText;
 @property (nonatomic,copy) NSString *noDataImage;
 /**
@@ -54,7 +54,7 @@ typedef void (^DYTableView_Result)(NSArray<id> *sources);
 /*
  *cell 的点击回调 otherClickFlag 自定义cell中 某个事件定义的flag
 */
-@property (nonatomic,copy) void(^didSelectedCellCallback)(NSIndexPath *idx, NSNumber * _Nullable otherClickFlag);
+@property (nonatomic,copy) void(^didSelectedCellCallback)(id model, NSNumber * _Nullable otherClickFlag);
 /**
  * 点击cell 回调模型
  */
@@ -64,7 +64,13 @@ typedef void (^DYTableView_Result)(NSArray<id> *sources);
  */
 @property (nonatomic, copy) void(^deleteCellCallback)(void);
 
+/**
+ * 主动调用  不经过下拉加载
+ */
+@property (nonatomic, copy) void(^loadLocalDataCallback)(DYTableView_Result result);
 
+
+- (void)loadLocalData;
 - (void)loadData;
 - (void)loadMoreData;
 @end
