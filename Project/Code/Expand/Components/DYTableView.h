@@ -36,6 +36,7 @@ typedef void (^DYTableView_Result)(NSArray<id> *sources);
  */
 @interface DYTableView : UITableView
 @property (nonatomic,assign) NSUInteger pageIndex;
+///如果需要翻页 必须得设置
 @property (nonatomic,assign) NSUInteger pageSize;
 @property (nonatomic,strong) NSMutableArray<id> *dy_dataSource;
 @property (nonatomic,copy) NSString *noDataText;
@@ -52,7 +53,7 @@ typedef void (^DYTableView_Result)(NSArray<id> *sources);
 /**获取网络请求，并接收请求的数据*/
 @property (nonatomic,copy) void(^loadDataCallback)(NSUInteger pageIndex,DYTableView_Result result);
 /*
- *cell 的点击回调 otherClickFlag 自定义cell中 某个事件定义的flag
+ * cell 的点击回调 otherClickFlag 自定义cell中 某个事件定义的flag
 */
 @property (nonatomic,copy) void(^didSelectedCellCallback)(id model, NSNumber * _Nullable otherClickFlag);
 /**

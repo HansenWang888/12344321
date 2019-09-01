@@ -43,7 +43,7 @@
 
     self.dataSource = self;
     self.delegate = self;
-    self.pageSize = 10;
+    self.pageSize = 99999;
     self.pageIndex = 0;
     
     [self addSubview:self.noDataBtn];
@@ -157,7 +157,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    self.noDataBtn.hidden = self.dy_dataSource.count > 0 ? YES : NO;
+    if (self.isShowNoData) {
+        self.noDataBtn.hidden = self.dy_dataSource.count > 0 ? YES : NO;
+    }
 
     return self.dy_dataSource.count;
 }

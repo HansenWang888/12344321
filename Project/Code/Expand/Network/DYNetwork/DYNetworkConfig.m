@@ -10,6 +10,7 @@
 #import "YTKNetworkAgent.h"
 #import "YTKNetworkConfig.h"
 #import <UIKit/UIKit.h>
+#import <AFSecurityPolicy.h>
 
 #define kUserDefault_EnvirmentKey @"kUserDefault_EnvirmentKey"
 @interface DYNetworkConfig ()<NSCopying, NSMutableCopying>
@@ -52,19 +53,28 @@
 
 
 + (void)initializeNetworkConfig {
+    [DYNetworkConfig.shareConfig skipCertificationVerify];
     YTKNetworkAgent *agent = [YTKNetworkAgent sharedAgent];
     [agent setValue:[NSSet setWithObjects:@"application/json", @"text/plain", @"text/javascript", @"text/json",@"text/html",@"image/gif", nil] forKeyPath:@"jsonResponseSerializer.acceptableContentTypes"];
-//    NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefault_EnvirmentKey];
-//    if (value) {
-//        kNetworkConfig.environmentType = (XDFNetworkType)value.integerValue;
-//    } else {
-//
-//    }
+    //    NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefault_EnvirmentKey];
+    //    if (value) {
+    //        kNetworkConfig.environmentType = (XDFNetworkType)value.integerValue;
+    //    } else {
+    //
+    //    }
 #if DEBUG
     kNetworkConfig.environmentType = kEnvirmentDefaultType;
 #else
     kNetworkConfig.environmentType = 1;
 #endif
+}
+/**
+ * 跳过证书验证
+ */
+- (void)skipCertificationVerify{
+    YTKNetworkConfig.sharedConfig.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    YTKNetworkConfig.sharedConfig.securityPolicy.allowInvalidCertificates = YES;
+    [YTKNetworkConfig.sharedConfig.securityPolicy setValidatesDomainName:NO];
 }
 
 - (void)setNetworkCDN:(NSString *)networkCDN {
@@ -77,7 +87,7 @@
     [YTKNetworkConfig sharedConfig].baseUrl = networkBaseURL;
 }
 + (void)showChangeEnvirmentVC {
-    if (kNetworkConfig.environmentType == 0) {
+    if (kNetworkConfig.environments.count == 0) {
         UIAlertController *vc = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"没有其他环境可切换" preferredStyle:UIAlertControllerStyleAlert];
         [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:vc animated:YES completion:nil];
         return;
@@ -110,19 +120,19 @@
     return self.environments[type][key];
 }
 - (void)setEnvironmentType:(XDFNetworkType)environmentType {
-   
+    
     dispatch_barrier_sync(_envirmentQueue, ^{
-
+        
         self->_environmentType = environmentType;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject:@(environmentType) forKey:kUserDefault_EnvirmentKey];
-
+        
     });
     
 }
 
 - (XDFNetworkType)environmentType {
-
+    
     __block int i;
     dispatch_sync(_envirmentQueue, ^{
         i = self->_environmentType;
