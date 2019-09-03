@@ -79,7 +79,7 @@ public extension UIAlertController {
         vc.addAction(cancle)
         vc.addAction(confirm)
         UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
-
+        
     }
     
     class func initAlertPromtVC(message: String, confirmTitle: String,confirmBlock: ((UIAlertAction) ->Void)?) {
@@ -107,6 +107,38 @@ public extension String {
         return regextestcm.evaluate(with: self)
     }
     
+    //MARK: 判断字符串中是否有中文
+    func isIncludeChinese() -> Bool {
+        for ch in self.unicodeScalars {
+            if (0x4e00 < ch.value  && ch.value < 0x9fff) { return true } // 中文字符范围：0x4e00 ~ 0x9fff
+        }
+        return false
+    }
+    //MARK: 将中文字符串转换为拼音
+    ///
+    /// - Parameter hasBlank: 是否带空格（默认不带空格）
+    func transformToPinyin(hasBlank: Bool = false) -> String {
+        
+        let stringRef = NSMutableString(string: self) as CFMutableString
+        CFStringTransform(stringRef,nil, kCFStringTransformToLatin, false) // 转换为带音标的拼音
+        CFStringTransform(stringRef, nil, kCFStringTransformStripCombiningMarks, false) // 去掉音标
+        let pinyin = stringRef as String
+        return hasBlank ? pinyin : pinyin.replacingOccurrences(of: " ", with: "")
+    }
+    
+    //MARK: 获取中文首字母
+    ///
+    /// - Parameter lowercased: 是否小写（默认大写）
+    func transformToPinyinHead(lowercased: Bool = false) -> String {
+        let pinyin = self.transformToPinyin(hasBlank: true).capitalized // 字符串转换为首字母大写
+        var headPinyinStr = ""
+        for ch in pinyin {
+            if ch <= "Z" && ch >= "A" {
+                headPinyinStr.append(ch) // 获取所有大写字母
+            }
+        }
+        return lowercased ? headPinyinStr.lowercased() : headPinyinStr
+    }
     
     
     func IsBankCard() -> Bool {
@@ -154,7 +186,7 @@ public extension String {
         if allSum % 10 == 0 {
             return true
         }
-      return false
+        return false
     }
     
     func isTellephoneNumber()->Bool
@@ -181,12 +213,12 @@ public extension String {
     }
     
     func getTextHeigh(font:UIFont,width:CGFloat) -> CGFloat {
-         let dic = NSDictionary(object: font, forKey: NSAttributedString.Key.font as NSCopying)
+        let dic = NSDictionary(object: font, forKey: NSAttributedString.Key.font as NSCopying)
         let normalText = self as NSString
         let size = CGSize.init(width: width,height: CGFloat(MAXFLOAT))
         
         let stringSize = normalText.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: dic as? [NSAttributedString.Key : Any], context:nil).size
-         return stringSize.height
+        return stringSize.height
     }
     
     func getTexWidth(font:UIFont,height:CGFloat) -> CGFloat {
@@ -200,7 +232,7 @@ public extension String {
     
     
     static func recognizeBankNameBy(_ bankCard: String) -> String {
-       
+        
         let path = Bundle.main.path(forResource: "banks", ofType: "plist")
         let dict = NSDictionary.init(contentsOfFile: path!) as! [String : String]
         let result = dict[bankCard]  ?? "未知"
@@ -237,7 +269,7 @@ public extension String {
 public extension UIButton {
     
     
-
+    
     
 }
 
@@ -362,6 +394,16 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return img!
     }
+    static func from(color: UIColor, size: CGSize) -> UIImage {
+        let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height);
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        context!.setFillColor(color.cgColor)
+        context!.fill(rect)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img!
+    }
     
 }
 
@@ -371,36 +413,36 @@ extension UIImageView{
     
     func setCornerImage(){
         //异步绘制图像
-//        DispatchQueue.global().async(execute: {
-            //1.建立上下文
+        //        DispatchQueue.global().async(execute: {
+        //1.建立上下文
         
-            UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0)
-            
-            //获取当前上下文
-            let ctx = UIGraphicsGetCurrentContext()
-            
-            //设置填充颜色
-            UIColor.white.setFill()
-            UIRectFill(self.bounds)
-            
-            //2.添加圆及裁切
-            ctx?.addEllipse(in: self.bounds)
-            //裁切
-            ctx?.clip()
-            
-            //3.绘制图像
-            self.draw(self.bounds)
-            
-            //4.获取绘制的图像
-            let image = UIGraphicsGetImageFromCurrentImageContext()
-            
-            //5关闭上下文
-            UIGraphicsEndImageContext()
-            
-            DispatchQueue.main.async(execute: {
-                self.image = image
-            })
-//        })
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0)
+        
+        //获取当前上下文
+        let ctx = UIGraphicsGetCurrentContext()
+        
+        //设置填充颜色
+        UIColor.white.setFill()
+        UIRectFill(self.bounds)
+        
+        //2.添加圆及裁切
+        ctx?.addEllipse(in: self.bounds)
+        //裁切
+        ctx?.clip()
+        
+        //3.绘制图像
+        self.draw(self.bounds)
+        
+        //4.获取绘制的图像
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        //5关闭上下文
+        UIGraphicsEndImageContext()
+        
+        DispatchQueue.main.async(execute: {
+            self.image = image
+        })
+        //        })
     }
     
     func setCornerImage(cornerRadius: Float){
@@ -419,7 +461,7 @@ extension UIImageView{
         
         //2.添加圆及裁切
         ctx?.addArc(tangent1End: .zero, tangent2End: .zero, radius: CGFloat(cornerRadius));
-
+        
         //裁切
         ctx?.clip()
         
@@ -481,7 +523,7 @@ extension Date {
     
     static func getFormdateYMDHM(timeStamp: Double) -> String {
         let timeSta:TimeInterval = TimeInterval(timeStamp / 1000)
-
+        
         let date = NSDate(timeIntervalSince1970: timeSta)
         let dfmatter = DateFormatter()
         dfmatter.locale = .current;
@@ -499,7 +541,7 @@ extension Date {
         dateFormat.timeZone = .autoupdatingCurrent;
         dateFormat.locale = .current;
         let date = dateFormat.date(from: dateStr);
-
+        
         return date!.timeIntervalSince1970 * 1000;
         
     }
@@ -519,6 +561,24 @@ extension UIMenuController {
             contrl.menuItems?.append(menu);
         }
         return contrl;
+    }
+    
+}
+
+extension Array {
+    
+    //MARK: 数组内中文按拼音字母排序
+    ///
+    /// - Parameter ascending: 是否升序（默认升序）
+    func sortedByPinyin(ascending: Bool = true) -> Array<String>? {
+        if self is Array<String> {
+            return (self as! Array<String>).sorted { (value1, value2) -> Bool in
+                let pinyin1 = value1.transformToPinyin()
+                let pinyin2 = value2.transformToPinyin()
+                return pinyin1.compare(pinyin2) == (ascending ? .orderedAscending : .orderedDescending)
+            }
+        }
+        return nil
     }
     
 }

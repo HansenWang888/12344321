@@ -9,25 +9,31 @@
 import UIKit
 
 class DYMaskingView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
     
-    var compeletedBlock: ((_ items:[Any]) ->Void)?
-    var contentHeight: CGFloat = 244;
+    /*
+     // Only override draw() if you perform custom drawing.
+     // An empty implementation adversely affects performance during animation.
+     override func draw(_ rect: CGRect) {
+     // Drawing code
+     }
+     */
+    typealias CompeletedBlock = (_ result: Any?) ->Void
+    typealias OtherViewClick = (_ flag: Int) ->Void
+    /**
+     * 默认选中的数据
+     */
+    var defaultData: Any?
+    var compeletedBlock: CompeletedBlock?
+    var otherClick: OtherViewClick?
+    var contentHeight: CGFloat = 250;
     var pickerBackgroudColor = UIColor.white;
     var titleColor = UIColor.black;
     var title: String?
     init() {
         super.init(frame: CGRect.init(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight))
-       
+        
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews();
         if self.subviews.count == 0 {
@@ -59,7 +65,7 @@ class DYMaskingView: UIView {
      * @param view 要显示的view 为nil时显示到window
      *
      */
-    func showOnView(_ view: UIView?, compeleted: @escaping ([Any]) -> Void) {
+    func showOnView(_ view: UIView?, compeleted: @escaping CompeletedBlock) {
         self.compeletedBlock = compeleted
         if view != nil {
             view?.addSubview(self)
@@ -75,6 +81,7 @@ class DYMaskingView: UIView {
         }
     }
     @objc func dismiss() {
+        self.willDismiss()
         self.removeFromSuperview()
         self.compeletedBlock = nil
     }
@@ -92,14 +99,14 @@ class DYMaskingView: UIView {
             make.edges.equalToSuperview();
         }
         self.contentView.snp.makeConstraints { (make) in
-            make.left.right.bottom.equalToSuperview()
+            make.left.right.bottom.equalToSuperview();
             make.height.equalTo(contentHeight);
         }
         self.titleLabel.snp.makeConstraints { (make) in
             make.centerX.top.equalToSuperview()
             make.height.equalTo(44)
-//            make.left.equalTo(self.cancleBtn.snp.right)
-//            make.right.equalTo(self.confirmBtn.snp.left)
+            //            make.left.equalTo(self.cancleBtn.snp.right)
+            //            make.right.equalTo(self.confirmBtn.snp.left)
         }
         self.pickerContentView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalToSuperview()
@@ -107,8 +114,12 @@ class DYMaskingView: UIView {
         }
         
         self.backgroundColor = UIColor.HWColorWithHexString(hex: "#000000", alpha: 0.4)
-       
         
+        
+    }
+    //MARK: 子类实现
+    func willDismiss()  {
+        assert(true, "请在子类重新是实现该方法");
     }
     
     @objc private func cancleBtnClick() {
@@ -156,5 +167,5 @@ class DYMaskingView: UIView {
     
     
     
-
+    
 }
