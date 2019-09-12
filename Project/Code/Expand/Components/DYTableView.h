@@ -70,10 +70,19 @@ typedef void (^DYTableView_Result)(NSArray<id> *sources);
  */
 @property (nonatomic, copy) void(^loadLocalDataCallback)(DYTableView_Result result);
 
+@property (nonatomic, assign) UIEdgeInsets dy_separateInsets;
+
+
+- (void)begainRefreshData;
 
 - (void)loadLocalData;
 - (void)loadData;
 - (void)loadMoreData;
+/**
+ * 根据dy_datasource 的count 显示隐藏
+ */
+- (void)updateNoDataView;
+- (void)manualUpdateNoDataView:(BOOL)isShow;
 @end
 
 

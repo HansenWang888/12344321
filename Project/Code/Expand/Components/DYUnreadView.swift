@@ -12,6 +12,9 @@ class DYUnreadView: UIView {
 
     let kUnReadView_Margin_TB:CGFloat = 2.0;
     let kUnReadView_Margin_LB:CGFloat = 4.0;
+    
+    var bgColor = UIColor.red;
+    var textColor = UIColor.white;
     override init(frame: CGRect) {
         super.init(frame: frame);
         self.setupSubviews();
@@ -50,13 +53,15 @@ class DYUnreadView: UIView {
     }
     
     private func setupSubviews() {
-        self.backgroundColor = UIColor.red;
+        self.backgroundColor = self.bgColor;
         self.addSubview(self.label);
         self.layer.cornerRadius = (self.label.height + CGFloat(2 * kUnReadView_Margin_TB)) * 0.5;
         self.layer.masksToBounds = true;
         self.isHidden = true;
     }
     private func distributionSubviews() {
+        self.backgroundColor = self.bgColor;
+        self.label.textColor = self.textColor;
         self.label.sizeToFit();
         var width = self.label.width + 2 * kUnReadView_Margin_LB;
         let height = self.label.height + 2 * kUnReadView_Margin_TB;
@@ -70,15 +75,22 @@ class DYUnreadView: UIView {
     }
   
     
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     
+    override var intrinsicContentSize: CGSize {
+        
+        return CGSize.init(width: 20, height: 20);
+        
+    }
+    
     private lazy var label: UILabel = {
         let label = UILabel()
         label.textAlignment = NSTextAlignment.center;
-        label.textColor = UIColor.white;
+        label.textColor = self.textColor;
         label.font = UIFont.systemFont(ofSize: 12);
         label.text = "0";
         label.sizeToFit();

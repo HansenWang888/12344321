@@ -23,22 +23,36 @@ import UIKit
     var title: String?
     var isSelect: Bool?
     var index: Int?
-    
+    var image: UIImage?
     
 }
 /**
  * 支持滑动的标题选择view
  */
+enum DYButtonLayout {
+    
+    case imageBeLeft
+    
+    case imageBeTop
+    
+    case imageBeRight
+    
+    case imageLabelBeCenter
+}
+
 @objcMembers class DYSliderHeadView: UIView {
 
     private var dataSources: [DYSliderModel] = []
     var selectIndexBlock: ((_ index: Int) -> Void)?
+    var btnLayout: DYButtonLayout = .imageBeLeft;
     var textColor: UIColor = UIColor.HWColorWithHexString(hex: "#333333");
     var selectColor = UIColor.blue;
     var currSelectIndex: Int = 0;
     var lineWidth:CGFloat = 30;
     var type: DYSliderHeaderType = .normal;
     var font: UIFont = UIFont.systemFont(ofSize: 14);
+    var imageSize: CGSize?
+    var images: [String]?
     var sliderPositionX: CGFloat = 0.0 {
         
         didSet {
@@ -46,22 +60,11 @@ import UIKit
         }
     
     }
+    private let titles: [String]
     required init(titles: [String]) {
+        self.titles = titles;
         super.init(frame: CGRect.zero)
-
-        for item in titles {
-            let index: Int = titles.index(of: item)!;
-            let model = DYSliderModel.init();
-            model.isSelect = index == 0 ? true : false;
-            model.title = item;
-            model.index = index;
-            var width = item.getTexWidth(font: UIFont.systemFont(ofSize: 14), height: 30) + 20;
-            if width < 60 {
-                width  = 60;
-            }
-            self.widthCache[index] = width;
-            self.dataSources.append(model);
-        }
+        
     }
     func updateSelectIndexFromOther(_ index: Int) {
         if index == self.currSelectIndex {
@@ -82,6 +85,24 @@ import UIKit
         }
     }
     private func setupSubview() {
+        for item in self.titles {
+            let index: Int = titles.firstIndex(of: item)!;
+            let model = DYSliderModel.init();
+            model.isSelect = index == self.currSelectIndex ? true : false;
+            model.title = item;
+            model.index = index;
+            model.image = UIImage.init(named: item);
+            if index < self.images?.count ?? 0 {
+                let imgstr = self.images?[index];
+                model.image = UIImage.init(named: imgstr ?? "");
+            }
+            var width = item.getTexWidth(font: UIFont.systemFont(ofSize: 14), height: 30) + 20;
+            if width < 60 {
+                width  = 60;
+            }
+            self.widthCache[index] = width;
+            self.dataSources.append(model);
+        }
         if self.type == .banScroll {
             for (index,_) in self.dataSources.enumerated() {
                 let width = self.width / CGFloat(self.dataSources.count);
@@ -98,7 +119,7 @@ import UIKit
         if self.dataSources.count > 0 {
             self.slider.isHidden = false;
             
-            self.slider.frame = CGRect.init(x: (self.widthCache[0]! - lineWidth) * 0.5, y: self.height - 2, width: 30, height: 2);
+            self.slider.frame = CGRect.init(x: (self.widthCache[self.currSelectIndex]! - lineWidth) * 0.5, y: self.height - 2, width: 30, height: 2);
         } else {
             self.slider.isHidden = true;
         }
@@ -107,7 +128,11 @@ import UIKit
             make?.left.right().bottom()?.offset()(0);
             make?.height.offset()(1.0);
         }
-       
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2, execute: {
+            self.updateSlider(index: self.currSelectIndex);
+        });
+     
     }
     func hideBottomLine() {
         self.lineView.isHidden = true;
@@ -154,7 +179,7 @@ import UIKit
         
         let beforeCell = self.collectionView.cellForItem(at: IndexPath.init(item: self.currSelectIndex, section: 0));
         if beforeCell != nil {
-            let beforeLabel =  beforeCell?.contentView.subviews.first as! UILabel;
+            let beforeView =  beforeCell?.contentView.subviews.first as! DYButton;
             if self.currSelectIndex < index {
                 self.collectionView.scrollToItem(at: IndexPath.init(item: index, section: 0), at: UICollectionView.ScrollPosition.right, animated: true);
                 
@@ -163,7 +188,7 @@ import UIKit
                 
             }
             let cell = collectionView.cellForItem(at: IndexPath.init(item: index, section: 0));
-            let label = cell?.contentView.subviews.first as! UILabel;
+            let label = cell?.contentView.subviews.first as! DYButton;
             let model = self.dataSources[index];
             label.text = model.title;
             self.currSelectIndex = index;
@@ -178,7 +203,7 @@ import UIKit
             }
             
             UIView.animate(withDuration: 0.25) {
-                self.updateLabelStatus(isSelect: false, label: beforeLabel);
+                self.updateLabelStatus(isSelect: false, label: beforeView);
                 self.updateLabelStatus(isSelect: true, label: label);
                 self.slider.frame.origin.x = x;
             };
@@ -187,9 +212,9 @@ import UIKit
         
     }
     
-    private func updateLabelStatus(isSelect:Bool, label: UILabel) {
-        let fontSize = label.font.pointSize;
-        label.font = UIFont.systemFont(ofSize: isSelect ? fontSize + 2 : fontSize - 2);
+    private func updateLabelStatus(isSelect:Bool, label: DYButton) {
+        let fontSize = label.titleLabel?.font.pointSize;
+        label.titleLabel?.font = UIFont.systemFont(ofSize: isSelect ? fontSize! + 2 : fontSize! - 2);
         label.textColor = isSelect ? self.selectColor : self.textColor;
     }
 
@@ -206,26 +231,35 @@ extension DYSliderHeadView: UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        let label: UILabel?
+        let btn: DYButton?
         if cell.contentView.subviews.count == 0 {
-            label = UILabel.init()
-            label?.textColor = self.textColor;
-            label?.font = UIFont.systemFont(ofSize: 14);
-            label?.textAlignment = NSTextAlignment.center
-            cell.contentView.addSubview(label!);
-            label?.mas_makeConstraints({ (make) in
+            var dict = [DYButtonLayout.imageBeLeft : 0,DYButtonLayout.imageBeTop : 1,DYButtonLayout.imageBeRight : 2,DYButtonLayout.imageLabelBeCenter : 3];
+            btn = DYButton.init();
+            btn?.direction = ContentDirection(dict[self.btnLayout]!);
+            btn?.textColor = self.textColor;
+            btn?.titleLabel?.font = UIFont.systemFont(ofSize: 14);
+            cell.contentView.addSubview(btn!);
+            btn?.mas_makeConstraints({ (make) in
                 make?.edges.offset();
             })
+            btn?.isUserInteractionEnabled = false;
             
         } else {
-            label = cell.contentView.subviews.first as? UILabel
+            btn = cell.contentView.subviews.first as? DYButton
         }
         let model = self.dataSources[indexPath.item];
-        if model.isSelect == true && indexPath.item == 0 {
-            label?.font = UIFont.systemFont(ofSize: 16);
+        if model.isSelect == true && indexPath.item == self.currSelectIndex {
+            btn?.titleLabel?.font = UIFont.systemFont(ofSize: 16);
         }
-        label?.textColor = model.isSelect == true ? self.selectColor : UIColor.HWColorWithHexString(hex: "#333333");
-        label?.text = self.dataSources[indexPath.item].title;
+        btn?.titleLabel?.textColor = model.isSelect == true ? self.selectColor : UIColor.HWColorWithHexString(hex: "#333333");
+        btn?.setTitle(self.dataSources[indexPath.item].title, for: .normal);
+        if self.imageSize?.width ?? 0 > 0 && self.imageSize?.height ?? 0 > 0 {
+            btn?.setImage(model.image?.resize(width: self.imageSize?.width ?? 0, height: self.imageSize?.height ?? 0), for: .normal);
+
+        } else {
+            btn?.setImage(model.image, for: .normal);
+
+        }
 
         return cell
     }

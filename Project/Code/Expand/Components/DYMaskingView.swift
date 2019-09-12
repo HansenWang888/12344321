@@ -9,14 +9,14 @@
 import UIKit
 
 class DYMaskingView: UIView {
-    
+
     /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
+    // Only override draw() if you perform custom drawing.
+    // An empty implementation adversely affects performance during animation.
+    override func draw(_ rect: CGRect) {
+        // Drawing code
+    }
+    */
     typealias CompeletedBlock = (_ result: Any?) ->Void
     typealias OtherViewClick = (_ flag: Int) ->Void
     /**
@@ -31,9 +31,9 @@ class DYMaskingView: UIView {
     var title: String?
     init() {
         super.init(frame: CGRect.init(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight))
-        
+       
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews();
         if self.subviews.count == 0 {
@@ -105,8 +105,8 @@ class DYMaskingView: UIView {
         self.titleLabel.snp.makeConstraints { (make) in
             make.centerX.top.equalToSuperview()
             make.height.equalTo(44)
-            //            make.left.equalTo(self.cancleBtn.snp.right)
-            //            make.right.equalTo(self.confirmBtn.snp.left)
+//            make.left.equalTo(self.cancleBtn.snp.right)
+//            make.right.equalTo(self.confirmBtn.snp.left)
         }
         self.pickerContentView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalToSuperview()
@@ -114,7 +114,7 @@ class DYMaskingView: UIView {
         }
         
         self.backgroundColor = UIColor.HWColorWithHexString(hex: "#000000", alpha: 0.4)
-        
+       
         
     }
     //MARK: 子类实现
@@ -167,5 +167,5 @@ class DYMaskingView: UIView {
     
     
     
-    
+
 }

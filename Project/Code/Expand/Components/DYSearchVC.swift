@@ -24,16 +24,20 @@ import UIKit
         
         get {
             
-            return self.resultVC?.tableView;
+            return (self.searchResultsController as? DYSearchResultVC)?.tableView;
         }
         
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated);
+        self.presentingViewController?.tabBarController?.tabBar.isHidden = true;
+
     }
 
     static func searchVC () -> DYSearchVC {
         let result = DYSearchResultVC.init();
         let vc = DYSearchVC.init(searchResultsController: result);
-        vc.resultVC = result;
-
+        vc.searchResultsUpdater = result
         return vc;
     }
     
@@ -47,12 +51,12 @@ import UIKit
         self.placeholder = self.placeholdertext;
         self.searchBar.keyboardType = UIKeyboardType.webSearch;
         self.searchBar.delegate = self;
+        self.delegate = self;
     }
     
-   
-    private weak var resultVC: DYSearchResultVC?
-   
-
+    deinit {
+        print("DYSearchVC 88888");
+    }
     
 }
 
@@ -67,30 +71,53 @@ extension DYSearchVC: UISearchControllerDelegate, UISearchBarDelegate {
         
     }
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.isActive = false;
+        self.removeFromParent();
+//        self.dismiss(animated: true, completion: nil);
+    }
+    
+    //if you present a another controller when searchController is presenting,
+
+    func willPresentSearchController(_ searchController: UISearchController) {
+        
+        self.presentingViewController?.tabBarController?.tabBar.isHidden = true;
+    }
+    func willDismissSearchController(_ searchController: UISearchController) {
+        self.presentingViewController?.tabBarController?.tabBar.isHidden = false;
+    }
     
 }
 
 
-private class DYSearchResultVC: UIViewController {
+private class DYSearchResultVC: UIViewController, UISearchResultsUpdating {
     
-    
- 
-    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.addSubview(self.tableView);
+        self.automaticallyAdjustsScrollViewInsets = false;
         self.tableView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview();
+            if #available(iOS 11.0, *) {
+                make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50);
+            } else {
+                // Fallback on earlier versions
+                make.top.equalToSuperview().offset(44);
+            };
+            make.left.right.bottom.equalToSuperview();
         }
+    
     }
     
     lazy var tableView: DYTableView = {
         
         let view = DYTableView.init();
         
-        
+        view.isShowNoData = false;
         return view;
         
     }()
@@ -304,28 +331,28 @@ class SKSearchController: UISearchController {
     }
     
     // MARK: - SearchBar Delegate Methods 代理事件闭包
-    private var searchBarEventsCenter = SKSearchEventsCenter()
+//    private var searchBarEventsCenter = SKSearchEventsCenter()
     
-    public typealias EmptySearchBarHandler = (UISearchBar)->()
-    public typealias BoolSearchBarHandler = (UISearchBar)->(Bool)
+//    public typealias EmptySearchBarHandler = (UISearchBar)->()
+//    public typealias BoolSearchBarHandler = (UISearchBar)->(Bool)
     
-    public var searchButtonClickHandler: EmptySearchBarHandler? {
-        willSet {
-            searchBarEventsCenter.searchButtonClickHandler = newValue
-        }
-    }
-    public var searchBarShouldBeginEditingHandler: BoolSearchBarHandler? {
-        willSet {
-            searchBarEventsCenter.searchBarShouldBeginEditingHandler = newValue
-        }
-    }
-    public var searchBarDidBeginEditingHandler: EmptySearchBarHandler?
-    public var searchBarShouldEndEditingHandler: BoolSearchBarHandler?
-    public var searchBarCancelButtonClickHandler: EmptySearchBarHandler?
+//    public var searchButtonClickHandler: EmptySearchBarHandler? {
+//        willSet {
+//            searchBarEventsCenter.searchButtonClickHandler = newValue
+//        }
+//    }
+//    public var searchBarShouldBeginEditingHandler: BoolSearchBarHandler? {
+//        willSet {
+//            searchBarEventsCenter.searchBarShouldBeginEditingHandler = newValue
+//        }
+//    }
+//    public var searchBarDidBeginEditingHandler: EmptySearchBarHandler?
+//    public var searchBarShouldEndEditingHandler: BoolSearchBarHandler?
+//    public var searchBarCancelButtonClickHandler: EmptySearchBarHandler?
     public var searchTextDidChange: ((UISearchBar, String)->())?
     public var searchTextShouldChangeInRange: ((UISearchBar, NSRange, String)->(Bool))?
     
-    public var searchBarBookmarkButtonTapped: EmptySearchBarHandler?
+//    public var searchBarBookmarkButtonTapped: EmptySearchBarHandler?
     
     
     
@@ -337,12 +364,12 @@ class SKSearchController: UISearchController {
     }
     /// Cancel Button 取消按钮
     private func updateCancelButtonSetting() {
-        let tmp = searchBarShouldBeginEditingHandler
-        searchBarEventsCenter.searchBarShouldBeginEditingHandler = { searchBar in
-            self.setupCancelButton(searchBar: searchBar)
-            if let handler = tmp { return handler(searchBar) }
-            else { return true }
-        }
+//        let tmp = searchBarShouldBeginEditingHandler
+//        searchBarEventsCenter.searchBarShouldBeginEditingHandler = { searchBar in
+//            self.setupCancelButton(searchBar: searchBar)
+//            if let handler = tmp { return handler(searchBar) }
+//            else { return true }
+//        }
     }
     /*
      Set up the cancel button
@@ -418,23 +445,20 @@ class SKSearchController: UISearchController {
     }
     
     // MARK: - Initalizers
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    override init(searchResultsController: UIViewController?) {
-        super.init(searchResultsController: nil)
-        
-        updateCancelButtonSetting()
-        searchBar.delegate = searchBarEventsCenter
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override public func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
+//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+//    }
+//    override init(searchResultsController: UIViewController?) {
+//        super.init(searchResultsController: nil)
+//
+//        updateCancelButtonSetting();
+////        searchBar.delegate = searchBarEventsCenter
+//    }
+//
+//    required public init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//
 }
 extension UIImage {
     func reRender(with color: UIColor) -> UIImage? {

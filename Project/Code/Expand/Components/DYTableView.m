@@ -44,7 +44,7 @@
     self.dataSource = self;
     self.delegate = self;
     self.pageSize = 99999;
-    self.pageIndex = 0;
+    self.pageIndex = 1;
     
     [self addSubview:self.noDataBtn];
     [self.noDataBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -61,6 +61,12 @@
     self.noDataBtn.hidden = YES;
     
 }
+
+- (void)manualUpdateNoDataView:(BOOL)isShow {
+    
+    self.noDataBtn.hidden = !isShow;
+    
+}
 - (void)loadLocalData {
     
     if (self.loadLocalDataCallback) {
@@ -69,13 +75,15 @@
             [weakself.dy_dataSource removeAllObjects];
             [weakself.dy_dataSource addObjectsFromArray:sources];
             [weakself reloadData];
+            [weakself updateNoDataView];
         });
     }
     
 }
 
+
 - (void)loadData {
-    self.pageIndex = 0;
+    self.pageIndex = 1;
     
     if (self.loadDataCallback) {
         kWeakly(self);
@@ -96,9 +104,20 @@
     }
     
 }
+//- (void)setDy_dataSource:(NSMutableArray<id> *)dy_dataSource {
+//    
+//    _dy_dataSource = dy_dataSource;
+//    [self updateNoDataView];
+//    
+//}
 /**下拉刷新*/
 
 - (void)handleDragDownData:(NSArray *)sources {
+    if (sources.count  == 0) {
+        [self.mj_header endRefreshing];
+        [self updateNoDataView];
+        return;
+    }
     
     [self.mj_header endRefreshing];
     [self.dy_dataSource removeAllObjects];
@@ -106,12 +125,13 @@
     [self reloadData];
     
     if (sources.count > 0 && sources.count == self.pageSize) {
-        self.mj_footer = [MJRefreshAutoFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+        self.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     }
     
     if (sources.count < self.pageSize && self.mj_footer) {
         [self.mj_footer endRefreshingWithNoMoreData];
     }
+    [self updateNoDataView];
     //如果代理是交给当前的view进行处理 就显示
 //    if (self.dataSource == self) {
 //        if (sources.count == 0 && self.isShowNoData) {
@@ -137,7 +157,18 @@
     }
 
 }
+- (void)begainRefreshData {
+    
+    [self.mj_header beginRefreshing];
+    
+}
 
+- (void)updateNoDataView {
+    if (self.isShowNoData) {
+        self.noDataBtn.hidden = self.dy_dataSource.count > 0 ? YES : NO;
+    }
+    
+}
 //- (void)setDy_dataSource:(NSMutableArray<DYTableViewModel *> *)dy_dataSource {
 //
 //    _dy_dataSource = dy_dataSource;
@@ -157,9 +188,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    if (self.isShowNoData) {
-        self.noDataBtn.hidden = self.dy_dataSource.count > 0 ? YES : NO;
-    }
+    [self updateNoDataView];
 
     return self.dy_dataSource.count;
 }
@@ -175,6 +204,11 @@
             weakself.didSelectedCellCallback(model, @(flag));
         }
     };
+    if (indexPath.row == self.dy_dataSource.count - 1) {
+        cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 10000);
+    } else {
+        cell.separatorInset = self.dy_separateInsets;
+    }
     return cell;
 }
 
@@ -282,6 +316,21 @@
 @implementation DYTableViewCell
 
 
+- (void)setModel:(id)model {
+    
+    _model = model;
+    if ([model isKindOfClass:NSDictionary.class]) {
+        
+        NSString *avatar = model[@"avatar"];
+        if ([avatar hasPrefix:@"http"]) {
+            [self.imageView sd_setImageWithURL:[NSURL URLWithString:avatar] placeholderImage:kDefaultAvatarImage];
+        } else {
+            self.imageView.image = [UIImage imageNamed:avatar];
+        }
+        self.textLabel.text = model[@"text"];
+    }
+   
+}
 
 @end
 

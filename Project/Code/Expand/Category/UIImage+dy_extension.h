@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 + (UIImage*)imageWithColor:(UIColor*)color;
+
+- (UIImage *)dy_rotateImageWithAngle:(CGFloat)angle resize:(CGSize)size;
 @end
 
 NS_ASSUME_NONNULL_END

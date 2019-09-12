@@ -27,6 +27,7 @@
     obj.selector = aSelector;
     obj.target = aTarget;
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:ti target:obj selector:@selector(fire) userInfo:userInfo repeats:yesOrNo];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     obj.timer = timer;
     return timer;
     
